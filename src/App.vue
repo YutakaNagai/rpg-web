@@ -1,30 +1,45 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
+import Hello from "./components/Hello.vue"
+import DispStatus from "./components/DispStatus.vue"
+import Battle from "./components/Battle.vue"
+import { ref, reactive } from 'vue';
+
+const state = reactive({
+  page: "top"
+})
+
+const player = reactive({
+  name: 'プレイヤー',
+  mhp: 10,
+  atk: 2,
+  def: 1,
+  spd: 1,
+})
+
+const enemy = reactive({
+  name: 'エネミー',
+  mhp: 10,
+  atk: 2,
+  def: 1,
+  spd: 3,
+})
+
+const chgPage = (page_name) => {
+  state.page = page_name
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <h1>RPG戦闘機能</h1>
+  <button @click="chgPage('playerStatus')">ステータス確認</button>
+  <button @click="chgPage('enemyStatus')">敵ステータス確認</button>
+  <button @click="chgPage('battle')">戦闘開始</button>
+
+  <DispStatus v-if="state.page==='playerStatus'" :character="player" />
+  <DispStatus v-if="state.page==='enemyStatus'" :character="enemy" />
+  <Battle v-if="state.page==='battle'" :player="player" :enemy="enemy" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
 </style>
